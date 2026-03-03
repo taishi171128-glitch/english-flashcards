@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英熟語暗記アプリ</title>
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#f2f2f2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+.card{
+  background:white;
+  width:90%;
+  max-width:600px;
+  padding:40px;
+  border-radius:15px;
+  text-align:center;
+  font-size:24px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+button{
+  margin:10px;
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+}
+.controls{
+  margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="card">スタートを押してね</div>
+
+<div class="controls">
+<button onclick="start()">スタート</button>
+<button onclick="showAnswer()">答え</button>
+<button onclick="next()">次へ</button>
+<button onclick="shuffle()">シャッフル</button>
+</div>
+
+<script>
+let cards=[
+["needless to say","言うまでもなく"],
+["strange to say","奇妙なことに"],
+["never A without B-ing","Aすると必ずBする"],
+["to tell the truth","実を言うと"],
+["feel like ~ing","～したい気がする"],
+["be worth ~ing","～する価値がある"],
+["frankly speaking","率直に言って"],
+["generally speaking","一般的に言って"],
+["strictly speaking","厳密に言うと"],
+["what is called","いわゆる"],
+["as ~ as possible","できるだけ～"],
+["not so much A as B","AというよりむしろB"]
+];
+
+let i=0;
+let started=false;
+
+function start(){
+  started=true;
+  document.getElementById("card").innerText=cards[i][0];
+}
+
+function showAnswer(){
+  if(started){
+    document.getElementById("card").innerText=cards[i][1];
+  }
+}
+
+function next(){
+  if(started){
+    i=(i+1)%cards.length;
+    document.getElementById("card").innerText=cards[i][0];
+  }
+}
+
+function shuffle(){
+  cards.sort(()=>Math.random()-0.5);
+}
+</script>
+
+</body>
+</html>

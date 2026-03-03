@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英熟語 最強4択アプリ</title>
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#f2f2f2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+.container{
+  width:95%;
+  max-width:700px;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+h2{text-align:center;}
+.question{
+  font-size:22px;
+  margin:20px 0;
+}
+button{
+  width:100%;
+  margin:8px 0;
+  padding:15px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+}
+.correct{background:#4CAF50;color:white;}
+.wrong{background:#f44336;color:white;}
+.normal{background:#e0e0e0;}
+#score{margin-top:15px;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>英熟語 最強4択</h2>
+<div class="question" id="question">スタートを押してね</div>
+<div id="choices"></div>
+<div id="score"></div>
+<button onclick="start()">スタート</button>
+<button onclick="next()">次へ</button>
+<button onclick="reviewWrong()">間違えた問題だけ</button>
+</div>
+
+<script>
+let data = [
+["言うまでもなく","needless to say"],
+["言うまでもなく","it goes without saying that S V"],
+["言うまでもなく","to say nothing of ~"],
+["言うまでもなく","not to mention ~"],
+["奇妙なことに","strange to say"],
+["〜すれば必ず…する","never A without B-ing"],
+["実を言うと","to tell the truth"],
+["〜しさえすればよい","All you have to do is ~"],
+["〜しさえすればよい","You have only to do ~"],
+["〜していただけませんか","Would you mind ~ing?"],
+["〜してもいいですか","Would you mind my ~ing?"],
+["〜したい気がする","feel like ~ing"],
+["〜することはできない","There is no ~ing"],
+["Oが〜するのを妨げる","prevent O from ~ing"],
+["〜しても無駄である","It is no use ~ing"],
+["〜する価値がある","be worth ~ing"],
+["〜するとすぐに","on ~ing"],
+["〜する時に","in ~ing"],
+["〜しませんか","What do you say to ~ing?"],
+["〜しませんか","How about ~ing?"],
+["〜しませんか","What about ~ing?"],
+["自分自身で〜した","of one's own ~ing"],
+["〜から判断して","judging from ~"],
+["〜といえば","talking of ~"],
+["〜といえば","speaking of ~"],
+["率直に言って","frankly speaking"],
+["率直に言って","to be frank with you"],
+["一般的に言って","generally speaking"],
+["厳密に言うと","strictly speaking"],
+["いわゆる","what is called"],
+["いわゆる","what we call"],
+["さらに良いことに","what is better"],
+["さらに悪いことに","what is worse"],
+["さらに","what is more"],
+["できるだけ〜","as 原級 as possible"],
+["AというよりむしろB","not so much A as B"],
+["〜さえしない","not so much as ~"]
+];
+
+let current;
+let score=0;
+let total=0;
+let wrongList=[];
+let activeData=[...data];
+
+function shuffle(array){
+  return array.sort(()=>Math.random()-0.5);
+}
+
+function start(){
+  score=0;
+  total=0;
+  wrongList=[];
+  activeData=[...data];
+  next();
+}
+
+function next(){
+  if(activeData.length===0){
+    document.getElementById("question").innerText="終了！";
+    return;
+  }
+  current = activeData[Math.floor(Math.random()*activeData.length)];
+  document.getElementById("question").innerText=current[0];
+
+  let choices=[current[1]];
+  while(choices.length<4){
+    let rand=data[Math.floor(Math.random()*data.length)][1];
+    if(!choices.includes(rand)) choices.push(rand);
+  }
+  shuffle(choices);
+
+  let html="";
+  choices.forEach(choice=>{
+    html+=`<button class="normal" onclick="checkAnswer('${choice.replace(/'/g,"")}')">${choice}</button>`;
+  });
+  document.getElementById("choices").innerHTML=html;
+}
+
+function checkAnswer(choice){
+  total++;
+  if(choice===current[1]){
+    score++;
+  }else{
+    wrongList.push(current);
+  }
+  document.getElementById("score").innerText=`正解率: ${score}/${total}`;
+  activeData = activeData.filter(item=>item!==current);
+}
+
+function reviewWrong(){
+  activeData=[...wrongList];
+  wrongList=[];
+  next();
+}
+</script>
+
+</body>
+</html>
